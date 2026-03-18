@@ -1,0 +1,40 @@
+apiVersion: harness.io/v1
+kind: Workflow
+type: service
+identifier: test
+name: test
+owner: group:account/_account_all_users
+orgIdentifier: default
+projectIdentifier: test
+spec:
+  output:
+    links:
+    - title: Pipeline Details
+      url: ${{ steps.trigger.output.PipelineUrl }}
+  lifecycle: experimental
+  parameters:
+  - title: Service Details
+    required:
+    - service_name
+    properties:
+      token:
+        title: Harness Token
+        type: string
+        ui:widget: password
+        ui:field: HarnessAuthToken
+      service_name:
+        title: Service Name
+        type: string
+        description: Mention the project name
+  steps:
+  - id: trigger
+    name: Creating your appication
+    action: trigger:harness-custom-pipeline
+    input:
+      url: https://deveshharness.pr2.harness.io/ng/account/DFszMnZhTFuIXV4H_8xMmw/module/ci/orgs/default/projects/test/pipelines/testpipe12/pipeline-studio/?storeType=INLINE
+      inputset:
+        service_name: ${{ parameters.service_name }}
+      apikey: ${{ parameters.token }}
+metadata:
+  tags:
+  - dfdf
